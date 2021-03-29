@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/mm_background"
+    tools:context=".insert_coin">
+
+
+    <Spinner
+        android:id="@+id/spinnerType"
+        android:layout_width="206dp"
+        android:layout_height="39dp"
+        android:background="@android:color/background_light"
+        android:spinnerMode="dropdown"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.583" />
+
+    <EditText
+        android:id="@+id/editTextQuantity"
+        android:layout_width="206dp"
+        android:layout_height="39dp"
+        android:background="@drawable/text_field"
+        android:ems="10"
+        android:hint="Quantity"
+        android:importantForAutofill="no"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:textColor="#000"
+        android:textColorHint="#000"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextYear"
+        app:layout_constraintVertical_bias="0.157" />
+
+    <EditText
+        android:id="@+id/editTextYear"
+        android:layout_width="206dp"
+        android:layout_height="39dp"
+        android:background="@drawable/text_field"
+        android:ems="10"
+        android:hint="Year"
+        android:importantForAutofill="no"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:textColor="#000"
+        android:textColorHint="#000"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerType"
+        app:layout_constraintVertical_bias="0.109" />
+
+    <ImageView
+        android:id="@+id/headsTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/head"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.249"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.12"
+        app:srcCompat="@drawable/ic_heads_txt" />
+
+    <ImageView
+        android:id="@+id/tailsTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/tails"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.738"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.121"
+        app:srcCompat="@drawable/ic_tails_txt" />
+
+    <ImageView
+        android:id="@+id/image_view_heads"
+        android:layout_width="112dp"
+        android:layout_height="125dp"
+        android:contentDescription="@string/picture_of_front_of_coin"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.21"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/headsTxt"
+        app:layout_constraintVertical_bias="0.018"
+        app:srcCompat="@drawable/ic_camera_btn" />
+
+    <ImageView
+        android:id="@+id/image_view_tails"
+        android:layout_width="112dp"
+        android:layout_height="125dp"
+        android:contentDescription="@string/picture_of_back_of_coin"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.789"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tailsTxt"
+        app:layout_constraintVertical_bias="0.018"
+        app:srcCompat="@drawable/ic_camera_btn" />
+
+    <Button
+        android:id="@+id/capture_image_heads"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ic_take_pic_btn"
+        app:layout_constraintBottom_toTopOf="@+id/spinnerType"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.221"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.913" />
+
+    <Button
+        android:id="@+id/capture_image_tails"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ic_take_pic_btn"
+        app:layout_constraintBottom_toTopOf="@+id/spinnerType"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.778"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.913" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/save_btn"
+        android:onClick="gotoMain"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.235"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.936" />
+
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/quit_btn"
+        android:onClick="gotoMain"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.754"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.936" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

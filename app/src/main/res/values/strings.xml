@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">COindex</string>
+    <string name="picture_of_back_of_coin">picture of back of coin</string>
+    <string name="head">head</string>
+    <string name="picture_of_front_of_coin">picture of front of coin</string>
+    <string name="tails">tails</string>
+    <string name="type_of_coin">Type of Coin</string>
+</resources>
