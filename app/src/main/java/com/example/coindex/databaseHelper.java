@@ -12,12 +12,12 @@ public class databaseHelper extends SQLiteOpenHelper {
     }
 
     @Override
-    public void onCreate(SQLiteDatabase sqLiteDatabase) {
-
+    public void onCreate(SQLiteDatabase dataBase) {
+        dataBase.execSQL("create Table CoinDetails(info TEXT Primary Key)");
     }
 
     @Override
-    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
+    public void onUpgrade(SQLiteDatabase dataBase, int i, int i1) {
 
     }
 }

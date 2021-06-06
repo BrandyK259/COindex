@@ -42,11 +42,6 @@ public class insert_coin extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_insert_coin);
 
-        Spinner type = findViewById(R.id.spinnerType);
-        String[] typeList = new String[]{"Type of Coin","Penny","Nickel","Dime","Quarter","Half-Dollar","Dollar","Other"};
-        ArrayAdapter<String> typeAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, typeList);
-        type.setAdapter(typeAdapter);
-
         himageView = findViewById(R.id.image_view_heads);
         hCaptureBtn = findViewById(R.id.capture_image_heads);
 
