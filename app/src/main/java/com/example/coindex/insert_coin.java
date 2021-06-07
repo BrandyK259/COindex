@@ -15,13 +15,14 @@ import android.provider.MediaStore;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 public class insert_coin extends AppCompatActivity {
 
-
+    //variables for the camera controls
     private static final int PERMISSION_CODE = 1000;
     private static final int IMAGE_CAPTURE_CODE = 1001;
 
@@ -37,11 +38,18 @@ public class insert_coin extends AppCompatActivity {
 
     Uri timage_uri;
 
+    //variables for the database controls
+    EditText info, type, quantity;
+    Button save;
+    databaseHelper DB;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        //initial code
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_insert_coin);
 
+        //code for camera controls
         himageView = findViewById(R.id.image_view_heads);
         hCaptureBtn = findViewById(R.id.capture_image_heads);
 
@@ -103,6 +111,32 @@ public class insert_coin extends AppCompatActivity {
             }
 
         });
+
+        //database control code now
+        info = findViewById(R.id.info_text);
+        type = findViewById(R.id.type_text);
+        quantity = findViewById(R.id.quantity_text);
+
+        save = findViewById(R.id.btn_save);
+        DB = new databaseHelper(this);
+
+        save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String text_info = info.getText().toString();
+                String text_type = type.getText().toString();
+                String text_quantity = quantity.getText().toString();
+
+                Boolean check_save_data = DB.save_coin_data(text_info,text_type,text_quantity);
+
+                if (check_save_data == true){
+                    Toast.makeText(insert_coin.this, "New Coin(s) Saved",Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    Toast.makeText(insert_coin.this, "New Coin(s) Not Saved",Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     public void gotoMain (View view){
@@ -136,16 +170,13 @@ public class insert_coin extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
 
-        switch (requestCode){
-            case PERMISSION_CODE:{
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    //permission from pop-up = granted
-                    openCamera();
-                }
-                else{
-                    //permission from pop-up = denied
-                    Toast.makeText(this, "Permission denied...", Toast.LENGTH_SHORT).show();
-                }
+        if (requestCode == PERMISSION_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                //permission from pop-up = granted
+                openCamera();
+            } else {
+                //permission from pop-up = denied
+                Toast.makeText(this, "Permission denied...", Toast.LENGTH_SHORT).show();
             }
         }
     }
