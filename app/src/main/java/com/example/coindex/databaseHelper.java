@@ -15,7 +15,7 @@ public class databaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase DB) {
-        DB.execSQL("create Table CoinDetails(info TEXT primary key, type TEXT, quantity TEXT)");
+        DB.execSQL("create Table CoinDetails(info TEXT primary key, type TEXT, quantity TEXT, heads TEXT, tails TEXT)");
     }
 
     @Override
@@ -23,13 +23,15 @@ public class databaseHelper extends SQLiteOpenHelper {
         DB.execSQL("drop table if exists CoinDetails");
     }
 
-    public Boolean save_coin_data(String info, String type, String quantity){
+    public Boolean save_coin_data(String info, String type, String quantity, String heads, String tails){
         SQLiteDatabase DB = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
 
         contentValues.put("info", info);
         contentValues.put("type", type);
         contentValues.put("quantity", quantity);
+        contentValues.put("heads", heads);
+        contentValues.put("tails", tails);
 
         long result = DB.insert("CoinDetails", null, contentValues);
         if(result == -1) {

@@ -61,22 +61,38 @@ public class insert_coin extends AppCompatActivity {
                     coinFace = 1;
                     if (checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED ||
                             checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
+
                         //permission not already granted, so get it
-                        String[] permission = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
-                        //pop-up for permission request
-                        requestPermissions(permission, PERMISSION_CODE);
+                        if (checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED &&
+                                checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED){
+
+                            //both permissions need to be granted
+                            String[] permission = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
+                            //pop-up for permission request
+                            requestPermissions(permission, PERMISSION_CODE);
+                        }
+                        else if(checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED &&
+                                checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED){
+
+                            //only permission to write to storage is needed
+                            String[] permission = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
+                            requestPermissions(permission, PERMISSION_CODE);
+                        }
+                        else{
+                            //only permission for camera is needed
+                            String[] permission = {Manifest.permission.CAMERA};
+                            requestPermissions(permission, PERMISSION_CODE);
+                        }
 
                     }
                     else {
                         //already have permission
                         openCamera();
-
                     }
                 }
                 else{
                     //system os < marshmallow
                     openCamera();
-
                 }
             }
 
@@ -94,10 +110,29 @@ public class insert_coin extends AppCompatActivity {
 
                     if (checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED ||
                             checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
+
                         //permission not already granted, so get it
-                        String[] permission = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
-                        //pop-up for permission request
-                        requestPermissions(permission, PERMISSION_CODE);
+                        if (checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED &&
+                                checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED){
+
+                            //both permissions need to be granted
+                            String[] permission = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
+                            //pop-up for permission request
+                            requestPermissions(permission, PERMISSION_CODE);
+                        }
+                        else if(checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED &&
+                                checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED){
+
+                            //only permission to write to storage is needed
+                            String[] permission = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
+                            requestPermissions(permission, PERMISSION_CODE);
+                        }
+                        else{
+                            //only permission for camera is needed
+                            String[] permission = {Manifest.permission.CAMERA};
+                            requestPermissions(permission, PERMISSION_CODE);
+                        }
+
                     }
                     else {
                         //already have permission
@@ -117,6 +152,7 @@ public class insert_coin extends AppCompatActivity {
         type = findViewById(R.id.type_text);
         quantity = findViewById(R.id.quantity_text);
 
+
         save = findViewById(R.id.btn_save);
         DB = new databaseHelper(this);
 
@@ -126,8 +162,10 @@ public class insert_coin extends AppCompatActivity {
                 String text_info = info.getText().toString();
                 String text_type = type.getText().toString();
                 String text_quantity = quantity.getText().toString();
+                String text_heads_pic = himage_uri.toString();
+                String text_tails_pic = timage_uri.toString();
 
-                Boolean check_save_data = DB.save_coin_data(text_info,text_type,text_quantity);
+                Boolean check_save_data = DB.save_coin_data(text_info, text_type, text_quantity, text_heads_pic, text_tails_pic);
 
                 if (check_save_data == true){
                     Toast.makeText(insert_coin.this, "New Coin(s) Saved",Toast.LENGTH_SHORT).show();
