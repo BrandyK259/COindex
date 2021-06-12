@@ -8,9 +8,12 @@ import android.Manifest;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -20,6 +23,12 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Locale;
+
 public class insert_coin extends AppCompatActivity {
 
     //variables for the camera controls
@@ -27,6 +36,7 @@ public class insert_coin extends AppCompatActivity {
     private static final int IMAGE_CAPTURE_CODE = 1001;
 
     int coinFace = 0;
+    File dir;
 
     Button hCaptureBtn;
     ImageView himageView;
@@ -37,6 +47,9 @@ public class insert_coin extends AppCompatActivity {
     ImageView timageView;
 
     Uri timage_uri;
+
+    Bitmap h_bitmap;
+    Bitmap t_bitmap;
 
     //variables for the database controls
     EditText info, type, quantity;
@@ -50,6 +63,14 @@ public class insert_coin extends AppCompatActivity {
         setContentView(R.layout.activity_insert_coin);
 
         //code for camera controls
+
+        // create the path for external storage
+        File path = Environment.getExternalStorageDirectory();
+        // create the folder for the images to be saved in
+
+        dir = new File(path+"/COindex/");
+        dir.mkdirs();
+
         himageView = findViewById(R.id.image_view_heads);
         hCaptureBtn = findViewById(R.id.capture_image_heads);
 
@@ -162,6 +183,7 @@ public class insert_coin extends AppCompatActivity {
                 String text_info = info.getText().toString();
                 String text_type = type.getText().toString();
                 String text_quantity = quantity.getText().toString();
+
                 String text_heads_pic = himage_uri.toString();
                 String text_tails_pic = timage_uri.toString();
 
@@ -214,7 +236,7 @@ public class insert_coin extends AppCompatActivity {
                 openCamera();
             } else {
                 //permission from pop-up = denied
-                Toast.makeText(this, "Permission denied...", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Permission denied.", Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -226,9 +248,41 @@ public class insert_coin extends AppCompatActivity {
        super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && coinFace == 1) {
             himageView.setImageURI(himage_uri);
+            h_bitmap = ((BitmapDrawable)himageView.getDrawable()).getBitmap();
+            saveImage(coinFace);
         }
         else if(resultCode == RESULT_OK && coinFace == 2){
             timageView.setImageURI(timage_uri);
+            t_bitmap = ((BitmapDrawable)timageView.getDrawable()).getBitmap();
+            saveImage(coinFace);
+        }
+    }
+
+    public void saveImage(int coinFace) {
+        //create a timestamp to serve as the image name
+        String time_stamp = new SimpleDateFormat("yyyyMMdd_HHmmss",
+                Locale.getDefault()).format(System.currentTimeMillis());
+        // create image name
+        String image_name = time_stamp + ".PNG";
+        File file = new File(dir, image_name);
+        OutputStream out;
+        try{
+            out = new FileOutputStream(file);
+            
+            if (coinFace == 1) {
+                h_bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+            }
+            else if(coinFace == 2){
+                t_bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+            }
+
+            out.flush();
+            out.close();
+            Toast.makeText(this, image_name+" saved to"+dir, Toast.LENGTH_LONG).show();
+        }
+        catch(Exception e){
+            //failed to save image
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
 }
