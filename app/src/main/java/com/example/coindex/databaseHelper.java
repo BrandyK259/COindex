@@ -5,8 +5,17 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 
 import androidx.annotation.Nullable;
+
+import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 public class databaseHelper extends SQLiteOpenHelper {
     public databaseHelper(Context context) {
@@ -15,7 +24,9 @@ public class databaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase DB) {
-        DB.execSQL("create Table CoinDetails(info TEXT primary key, type TEXT, quantity TEXT, heads TEXT, tails TEXT)");
+        DB.execSQL(
+                "create table CoinDetails (info TEXT primary key, type TEXT, quantity TEXT, heads BLOB, tails BLOB)"
+        );
     }
 
     @Override
@@ -23,7 +34,7 @@ public class databaseHelper extends SQLiteOpenHelper {
         DB.execSQL("drop table if exists CoinDetails");
     }
 
-    public Boolean save_coin_data(String info, String type, String quantity, String heads, String tails){
+    public Boolean save_coin_data(String info, String type, String quantity, byte[] heads, byte[] tails){
         SQLiteDatabase DB = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
 
@@ -88,4 +99,24 @@ public class databaseHelper extends SQLiteOpenHelper {
         Cursor cursor = DB.rawQuery("Select * from CoinDetails", null);
         return cursor;
     }
+
+    public byte[] file_to_bytes(File file){
+        int size = (int)file.length();
+        byte[] bytes = new byte[size];
+        try {
+            BufferedInputStream buf = new BufferedInputStream(new FileInputStream(file));
+            buf.read(bytes, 0, bytes.length);
+            buf.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return bytes;
+    }
+
+    //public Bitmap bytes_to_file(byte[] bytes){
+        //work on the following later as it returns a bitmap, however technically the byte array equals a file now instead of a bitmap
+        //return BitmapFactory.decodeByteArray(bytes,0,bytes.length);
+    //}
 }
