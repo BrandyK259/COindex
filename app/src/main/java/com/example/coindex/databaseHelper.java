@@ -115,8 +115,12 @@ public class databaseHelper extends SQLiteOpenHelper {
         return bytes;
     }
 
-    //public Bitmap bytes_to_file(byte[] bytes){
-        //work on the following later as it returns a bitmap, however technically the byte array equals a file now instead of a bitmap
-        //return BitmapFactory.decodeByteArray(bytes,0,bytes.length);
-    //}
+    //supposedly this is a function that can save the thumbnail of the camera picture, the thumbnail might be better to save
+    /*protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            imageView.setImageBitmap(imageBitmap);
+        }
+    }*/
 }
