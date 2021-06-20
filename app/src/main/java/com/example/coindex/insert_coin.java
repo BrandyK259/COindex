@@ -270,7 +270,7 @@ public class insert_coin extends AppCompatActivity {
         ContentValues values = new ContentValues();
         values.put (MediaStore.Images.Media.TITLE, "New Picture");
         values.put (MediaStore.Images.Media.DESCRIPTION, "From the Camera");
-        if (coinFace == 1) {
+        /*if (coinFace == 1) {
             himage_uri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
         }
         else if(coinFace == 2){
@@ -286,6 +286,8 @@ public class insert_coin extends AppCompatActivity {
             cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, timage_uri);
         }
         startActivityForResult(cameraIntent, IMAGE_CAPTURE_CODE);
+
+         */
     }
 
     //handle permission from pop-up
@@ -306,7 +308,7 @@ public class insert_coin extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         //gets called when image is captured from camera
-
+        /*
        super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && coinFace == 1) {
             himageView.setImageURI(himage_uri);
@@ -318,8 +320,11 @@ public class insert_coin extends AppCompatActivity {
             t_bitmap = ((BitmapDrawable)timageView.getDrawable()).getBitmap();
             saveImage(coinFace);
         }
+
+         */
     }
 
+    /*
     public void saveImage(int coinFace) {
         //create a timestamp to serve as the image name
         String time_stamp = new SimpleDateFormat("yyyyMMdd_HHmmss",
@@ -354,4 +359,6 @@ public class insert_coin extends AppCompatActivity {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
+    
+     */
 }
