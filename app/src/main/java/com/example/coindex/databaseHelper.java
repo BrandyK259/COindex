@@ -9,13 +9,15 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 import androidx.annotation.Nullable;
-
+import java.sql.Blob;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import android.util.Base64;
+import android.graphics.Matrix;
 
 public class databaseHelper extends SQLiteOpenHelper {
     public databaseHelper(Context context) {
@@ -25,8 +27,10 @@ public class databaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase DB) {
         DB.execSQL(
-                "create table CoinDetails (info TEXT primary key, type TEXT, quantity TEXT, heads BLOB, tails BLOB)"
+                "create table CoinDetails (info TEXT primary key, type TEXT, quantity TEXT, heads TEXT, tails TEXT)"
         );
+
+
     }
 
     @Override
@@ -34,7 +38,7 @@ public class databaseHelper extends SQLiteOpenHelper {
         DB.execSQL("drop table if exists CoinDetails");
     }
 
-    public Boolean save_coin_data(String info, String type, String quantity, byte[] heads, byte[] tails){
+    public Boolean saveCoinData(String info, String type, String quantity, String heads, String tails) {
         SQLiteDatabase DB = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
 
@@ -45,14 +49,16 @@ public class databaseHelper extends SQLiteOpenHelper {
         contentValues.put("tails", tails);
 
         long result = DB.insert("CoinDetails", null, contentValues);
-        if(result == -1) {
+
+
+        if (result == -1) {
             return false;
-        } else{
+        } else {
             return true;
         }
     }
 
-    public Boolean update_coin_data(String info, String type, String quantity){
+    public Boolean updateCoinData(String info, String type, String quantity) {
         SQLiteDatabase DB = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
 
@@ -60,7 +66,7 @@ public class databaseHelper extends SQLiteOpenHelper {
         contentValues.put("quantity", quantity);
 
         Cursor cursor = DB.rawQuery("Select * from CoinDetails where info = ?", new String[]{info});
-        if(cursor.getCount() >0 ) {
+        if (cursor.getCount() > 0) {
 
             long result = DB.update("CoinDetails", contentValues, "info=?", new String[]{info});
             if (result == -1) {
@@ -69,58 +75,63 @@ public class databaseHelper extends SQLiteOpenHelper {
                 return true;
             }
 
-        }
-        else{
+        } else {
             return false;
         }
     }
 
-    public Boolean delete_coin_data(String info){
+    public Boolean deleteCoinData(String info) {
         SQLiteDatabase DB = this.getWritableDatabase();
 
         Cursor cursor = DB.rawQuery("Select * from CoinDetails where info = ?", new String[]{info});
-        if(cursor.getCount() >0 ) {
+        if (cursor.getCount() > 0) {
 
-            long result = DB.delete("CoinDetails","info=?", new String[]{info});
+            long result = DB.delete("CoinDetails", "info=?", new String[]{info});
             if (result == -1) {
                 return false;
             } else {
                 return true;
             }
 
-        }
-        else{
+        } else {
             return false;
         }
     }
 
-    public Cursor get_data(){
+    public Cursor getData() {
         SQLiteDatabase DB = this.getWritableDatabase();
         Cursor cursor = DB.rawQuery("Select * from CoinDetails", null);
         return cursor;
     }
 
-    public byte[] file_to_bytes(File file){
-        int size = (int)file.length();
-        byte[] bytes = new byte[size];
-        try {
-            BufferedInputStream buf = new BufferedInputStream(new FileInputStream(file));
-            buf.read(bytes, 0, bytes.length);
-            buf.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return bytes;
+    public String bitmapToString(Bitmap bitmap) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+        byte[] b = baos.toByteArray();
+        return Base64.encodeToString(b, Base64.DEFAULT);
     }
 
-    //supposedly this is a function that can save the thumbnail of the camera picture, the thumbnail might be better to save
-    /*protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            Bundle extras = data.getExtras();
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
-            imageView.setImageBitmap(imageBitmap);
+    public Bitmap stringToBitmap(String encodedString) {
+        try {
+            byte[] encodeByte = Base64.decode(encodedString, Base64.DEFAULT);
+            return BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+        } catch (Exception e) {
+            e.getMessage();
+            return null;
         }
-    }*/
+    }
+
+    public Bitmap resizeBitmap(Bitmap bitmap) {
+        int width = bitmap.getWidth();
+        int height = bitmap.getHeight();
+        float scaleWidth = 250 / width;
+        float scaleHeight = 250 / height;
+
+        Matrix matrix = new Matrix();
+        matrix.postScale(scaleWidth, scaleHeight);
+        Bitmap resizedBitmap = Bitmap.createBitmap(
+                bitmap, 0, 0, width, height, matrix, false);
+        bitmap.recycle();
+        return resizedBitmap;
+    }
 }
